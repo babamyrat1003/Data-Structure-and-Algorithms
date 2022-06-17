@@ -1,48 +1,28 @@
-#include<iostream>
+#include<bits/stdc++.h>
 using namespace std;
-void  maXBorder(string C[], int A[], int n)
-{
-	int i,j,k,c,max;
-	
-	for(i=0;i<2*n-1;i+=2)
-	{
-		max=0;
-		for(j=0;j<A[i];j++)
-		{
-			for(k=0;k<A[i+1];k++)
-			{
-				if(C[k]=='#')
-					c++;
-			}			
-			
-			if(max<c) max=c;
-			c=0;
-		}
-			cout<<max<<endl;					
-	}
-}
-
 int main()
 {
-	int n,i,j,k,aIndex=0,cIndex=0;
-	string C;s
+	int t;
+	cin>>t;
 	
-	cin>>n;
-	int A[2*n];	
-	
-	for(i=0;i<n;i++)
+	int n,m,a[t];
+	int idx=0;
+	while(t--)
 	{
-		for(j=0;j<2;j++)
+		cin>>n>>m;
+		int c=0,max=-1;
+		string s;
+		
+		for(int i=0;i<n;i++)
 		{
-			cin>>A[aIndex++];
-			
-			for(k=0;k<A[aIndex];k++)
+			cin>>s;
+			for(int j=0;j<s.length();j++)
 			{
-				cin>>C[cIndex++];
+				if(s[j]=='#')c++;
 			}
+			if(c>max)max=c;
+			c=0;
 		}
+		cout<<max<<endl;		
 	}
-	
-	maXBorder(C,A,n);
-	return 0;
 }
