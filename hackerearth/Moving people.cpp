@@ -1,231 +1,64 @@
-#include<bits/stdc++.h>
-using namespace std;
-int main()
-{
-	int n,m,q;
-	cin>>n>>m>>q;
-	
-	int a[n][m];
-	
-	string s[n];
-	for(int i=0;i<n;i++)cin>>s[i];
-	
-	int qq,x,y;	
-	while (q--)
-	{
-		cin>>qq;
-		
-		if(qq==1)
-		{
-			cin>>x>>y;
+#include<bits/stdc++.h> 
+using namespace std; 
+const int maxn = 1005; 
+int n, m, x, y, z, k; 
+string str[maxn]; 
+int csum[maxn][maxn]; 
+int main() 
+	{ 
+		//freopen("samplein1.txt", "r", stdin); //freopen("sampleout1.txt", "w", stdout); 
 			
-			if(x<0)
-			{
-				int rght=x*(-1);
-			
-				for(int i_i=0; i_i<rght; i_i++)
-				{
-					for(int i=0; i<n; i++)
-					{
-						string ss = s[i];
-						for(int j=m-1; j>0;j--)
-							ss[j]=ss[j-1];					
-										
-						ss[0]='0';
-						s[i]=ss;
-					}
-				}
-			}
-			if(y<0)
-			{
-				 int down = y*(-1);
-				 
-				 for(int i_i=0; i_i<down; i_i++)
-				 {
-				 	for(int i=n-1; i>0; i--)
-				 	{
-				 		string ss=s[i];
-						string sss=s[i-1];	
-						
-						for(int j=0; j<m; j++)
-							ss[j]=sss[j];
-						
-						s[i]=ss;						
-					}
-					string ss=s[0];
-					for(int j_j=0; j_j<m; j_j++) ss[j_j]='0';
-					
-					s[0]=ss;
-				 }				 
-			}
-			if(x>0)
-			{
-				for(int i_i=0; i_i<x; i_i++)
-				{
-					for(int i=0; i<n; i++)
-					{
-						string ss =s[i];
-						for(int j=0; j<m-1; j++)
-							ss[j]=ss[j+1];
-					
-						ss[m-1]='0';
-						s[i]=ss;
-					}
-				}		
-			}
-			if(y>0)
-			{
-				 for(int i_i=0; i_i<y; i_i++)
-				 {
-				 	for(int i=0; i<n-1; i++)
-				 	{
-				 		string ss=s[i];
-						string sss=s[i+1];	
-						
-						for(int j=0; j<m; j++)
-							ss[j]=sss[j];
-						
-						s[i]=ss;
-					}
-					string ss = s[n-1];
-						
-					for(int j_j=0; j_j<m; j_j++) ss[j_j]='0';
-					
-					s[0]=ss;
-				 }
-			}
-			if(x==0)continue;
-			if(y==0)continue;	
-		}
+		cin >> n >> m >> k; 
+		for(int i = 1; i <= n; i++) cin >> str[i]; 
 		
-		int c=0;
-		if(qq==2)
-		{
-				for(int i=0;i<n;i++)
-				{
-					string ss=s[i];
-					
-					for(int j=0;j<m;j++)
-					if(ss[j]=='1')c++;
-				}
+		for(int i = 1; i <= n; i++)
+		{ 
+			for(int j = 1; j <= m; j++)
+			{ 
+				csum[i][j] = csum[i - 1][j] + csum[i][j - 1] - csum[i - 1][j - 1]; 
 				
-				cout<<c<<endl;
-		}	
+				if(str[i][j - 1] == '1') csum[i][j]++; 
+			} 
+		} 
+			
+		int lft = 1, rgh = m, up = 1, dwn = n; 
+		bool flg = false; 
+		int mxlft = 1, mnrgh = m; 
+		int mxup = 1, mndwn = n; 
 		
+		while(k--)
+		{ 
+			int tp; 
+			scanf("%d", &tp); 
+			
+			if(tp == 1)
+			{ 
+				int x, y; 
+				scanf("%d %d", &x, &y); 
+				lft += x; rgh += x; up += y; dwn += y; 
+				
+				if(lft > m || rgh < 1 || up > n || dwn < 1) flg = true; 
+				
+				 lft = max(lft, 1); 
+				 rgh = min(rgh, m); 
+				 up = max(up, 1); 
+				 dwn = min(dwn, n); 
+				 mxlft = max(mxlft, lft); 
+				 mnrgh = min(mnrgh, rgh); 
+				 mxup = max(mxup, up); 
+				 mndwn = min(mndwn, dwn);
+				  
+			} 
+			else
+			{ 
+				if(mxlft > mnrgh || mxup > mndwn)
+				 printf("0\n"); 
+				else
+				{ 
+					int anss = csum[mndwn][mnrgh] - csum[mndwn][mxlft - 1] - csum[mxup - 1][mnrgh] + csum[mxup - 1][mxlft - 1]; printf("%d\n", anss); 
+				} 
+			} 
+		} 
 		
-	}	
-		
-//	for(int i=0;i<n;i++)
-//	{
-//		for(int j=0;j<m;j++)
-//		{
-//			cout<<a[i][j]<<' ';
-//		}
-//		cout<<endl;
-//	}
-		
-	
-	
-}
-//#include<bits/stdc++.h>
-//using namespace std;
-//int main()
-//{
-//	int n,m,q;
-//	cin>>n>>m>>q;
-//	
-//	int a[n][m];
-//	
-//	string s[n];
-//	for(int i=0;i<n;i++)cin>>s[i];
-//	
-//	for(int i=0;i<n;i++)
-//	for(int j=0;j<m;j++)
-//		cin>>a[i][j];
-//	
-//	
-//	int qq,x,y;	
-//	while (q--)
-//	{
-//		cin>>qq;
-//		
-//		if(qq==1)
-//		{
-//			cin>>x>>y;
-//			
-//			if(x<0)
-//			{
-//				int rght=x*(-1);
-//			
-//				for(int i_i=0; i_i<rght; i_i++)
-//				{
-//					for(int i=0; i<n; i++)
-//					for(int j=m-1; j>0; j--)
-//						a[i][j]=a[i][j-1];
-//															
-//					for(int j_j=0; j_j<n; j_j++) a[j_j][i_i]=0;
-//				}
-//			}
-//			if(y<0)
-//			{
-//				 int down = y*(-1);
-//				 
-//				 for(int i_i=0; i_i<down; i_i++)
-//				 {
-//				 	for(int i=n-1; i>0; i--)
-//				 	for(int j=0; j<m; j++)
-//						a[i][j]=a[i-1][j];
-//						
-//					for(int j_j=0; j_j<m; j_j++) a[i_i][j_j]=0;
-//				 }				 
-//			}
-//			if(x>0)
-//			{
-//				for(int i_i=0; i_i<x; i_i++)
-//				{
-//					for(int i=0; i<n; i++)
-//					for(int j=0; j<m-1; j++)
-//						a[i][j]=a[i][j+1];
-//															
-//					for(int j_j=0; j_j<n; j_j++) a[j_j][m-1-i_i]=0;
-//				}		
-//			}
-//			if(y>0)
-//			{
-//				 for(int i_i=0; i_i<y; i_i++)
-//				 {
-//				 	for(int i=0; i<n-1; i++)
-//				 	for(int j=0; j<m; j++)
-//						a[i][j]=a[i+1][j];
-//						
-//					for(int j_j=0; j_j<m; j_j++) a[n-i_i-1][j_j]=0;
-//				 }
-//			}
-//			if(x==0)continue;
-//			if(y==0)continue;	
-//		}
-//		
-//		int c=0;
-//		if(qq==2)
-//		{
-//				for(int i=0;i<n;i++)
-//				for(int j=0;j<m;j++)
-//				if(a[i][j]==1)c++;
-//				
-//				cout<<c<<endl;
-//		}	
-//	}	
-//		
-//		
-////	for(int i=0;i<n;i++)
-////	{
-////		for(int j=0;j<m;j++)
-////		{
-////			cout<<a[i][j]<<' ';
-////		}
-////		cout<<endl;
-////	}
-//		
-//	
-//	
-//}
+		return 0; 
+	}
